@@ -1,7 +1,8 @@
 {
+  "main": "./src/server.js",
   "scripts": {
-    "start": "node backend/atividade.js",
-    "dev": "nodemon backend/atividade.js"
+    "start": "node ./src/server.js",
+    "dev": "nodemon ./src/server.js"
   },
   "dependencies": {
     "cors": "^2.8.6",
