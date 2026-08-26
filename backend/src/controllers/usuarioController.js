@@ -5,6 +5,7 @@ const buscarUsuarios = async (req, res) => {
         const usuarios = await usuarioService.obterTodosUsuarios();
         res.status(200).json({data: usuarios});
     } catch (error) {
+        console.error('Erro ao buscar usuários:', error);
         res.status(500).json({ error: 'Erro interno ao buscar usuários' });
     }
 };

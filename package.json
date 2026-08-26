@@ -1,12 +1,19 @@
 {
   "main": "./src/server.js",
   "scripts": {
-    "start": "node ./src/server.js",
-    "dev": "nodemon ./src/server.js"
+    "start": "node ./backend/src/server.js",
+    "dev": "nodemon ./backend/src/server.js"
   },
   "dependencies": {
+    "bcrypt": "^6.0.0",
     "cors": "^2.8.6",
     "express": "^5.2.1",
-    "nodemon": "^3.1.14"
+    "mysql2": "^3.24.2",
+    "nodemon": "^3.1.14",
+    "sequelize": "^6.37.8"
+  },
+  "devDependencies": {
+    "dotenv": "^17.4.2",
+    "sequelize-cli": "^6.6.5"
   }
 }
