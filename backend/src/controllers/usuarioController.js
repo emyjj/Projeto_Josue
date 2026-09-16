@@ -1,4 +1,5 @@
 const usuarioService = require('../services/usuarioService');
+const bcrypt = require('bcrypt');
 
 const buscarUsuarios = async (req, res) => {
     try {
@@ -33,7 +34,7 @@ const criarUsuario = async (req, res) => {
         if (!nome || !email || !senha) {
             return res.status(400).json({ error: 'Nome, email e senha são obrigatórios' });
         }
-
+        const hash = await bcrypt.hash(senha, 10);
         const usuario = await usuarioService.criarUsuario({ nome, email, senha, foto: foto || null });
         return res.status(201).json({ data: usuario, message: 'Usuário criado com sucesso' });
     } catch (error) {
