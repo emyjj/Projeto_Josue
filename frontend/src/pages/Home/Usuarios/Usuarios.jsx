@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Plus, Search, Pencil, Trash2, X } from 'lucide-react';
+import UserLocationsMap from '../../../components/UserLocationsMap';
 import {
   getUsuarios,
   getUsuario,
@@ -13,12 +14,16 @@ const initialForm = {
   email: '',
   senha: '',
   foto: '',
+  bairro: '',
+  cidade: '',
+  pais: 'Brasil',
 };
 
 function Usuarios() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [notice, setNotice] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [editingUser, setEditingUser] = useState(null);
   const [searchId, setSearchId] = useState('');
@@ -48,18 +53,23 @@ function Usuarios() {
   };
 
   const openCreateModal = () => {
+    setNotice(null);
     setEditingUser(null);
     setFormData(initialForm);
     setShowModal(true);
   };
 
   const openEditModal = (usuario) => {
+    setNotice(null);
     setEditingUser(usuario);
     setFormData({
       nome: usuario.nome,
       email: usuario.email,
       senha: '',
       foto: usuario.foto || '',
+      bairro: usuario.bairro || '',
+      cidade: usuario.cidade || '',
+      pais: usuario.pais || 'Brasil',
     });
     setShowModal(true);
   };
@@ -74,19 +84,22 @@ function Usuarios() {
     event.preventDefault();
 
     try {
+      let response;
       if (editingUser) {
         const payload = {
           ...formData,
           senha: formData.senha || undefined,
         };
-        await updateUsuario(editingUser.id, payload);
+        response = await updateUsuario(editingUser.id, payload);
       } else {
-        await createUsuario(formData);
+        response = await createUsuario(formData);
       }
 
+      setNotice(response.message);
       closeModal();
       fetchUsuarios();
     } catch (err) {
+      setNotice(null);
       setError(err.response?.data?.error || err.message || 'Erro ao salvar usuário');
     }
   };
@@ -157,6 +170,9 @@ function Usuarios() {
       {loading && <div style={styles.message}>Carregando usuários...</div>}
 
       {error && <div style={styles.message}>Ops! {error}</div>}
+      {notice && <div role="status" style={styles.notice}>{notice}</div>}
+
+      {!loading && !error && <UserLocationsMap users={users} />}
 
       {!loading && !error && users.length === 0 && (
         <div style={styles.emptyState}>Nenhum usuário encontrado.</div>
@@ -248,6 +264,20 @@ function Usuarios() {
                   placeholder="https://..."
                 />
               </label>
+
+              <section style={styles.addressSection}>
+                <h3 style={styles.addressTitle}>Endereço para localização</h3>
+                <div style={styles.addressGrid}>
+                  <label style={styles.fieldLabel}>
+                    Bairro
+                    <input type="text" name="bairro" value={formData.bairro} onChange={handleInputChange} style={styles.input} maxLength={150} />
+                  </label>
+                  <label style={styles.fieldLabel}>
+                    Cidade
+                    <input type="text" name="cidade" value={formData.cidade} onChange={handleInputChange} style={styles.input} maxLength={150} required />
+                  </label>
+                </div>
+              </section>
 
               <div style={styles.footerButtons}>
                 <button type="button" style={styles.secondaryButton} onClick={closeModal}>
@@ -422,6 +452,14 @@ const styles = {
     margin: '2rem 0',
     fontSize: '1rem',
   },
+  notice: {
+    margin: '0 0 16px',
+    padding: '12px 14px',
+    border: '1px solid var(--border-color)',
+    borderLeft: '4px solid #238477',
+    background: 'var(--card-bg)',
+    color: 'var(--text-primary)',
+  },
   emptyState: {
     background: 'var(--card-bg)',
     border: '1px solid var(--border-color)',
@@ -445,6 +483,8 @@ const styles = {
     borderRadius: '16px',
     width: '100%',
     maxWidth: '560px',
+    maxHeight: 'calc(100vh - 40px)',
+    overflowY: 'auto',
     padding: '1.5rem',
     border: '1px solid var(--border-color)',
     boxShadow: '0 24px 60px rgba(15, 23, 42, 0.25)',
@@ -474,6 +514,21 @@ const styles = {
   form: {
     display: 'grid',
     gap: '16px',
+  },
+  addressSection: {
+    display: 'grid',
+    gap: '12px',
+    paddingTop: '4px',
+  },
+  addressTitle: {
+    margin: 0,
+    color: 'var(--text-primary)',
+    fontSize: '1rem',
+  },
+  addressGrid: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
+    gap: '12px',
   },
   fieldLabel: {
     display: 'grid',

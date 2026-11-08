@@ -1,0 +1,50 @@
+.user-locations {
+  margin: 0 0 24px;
+}
+
+.user-locations-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.user-locations-heading h2 {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: 1.15rem;
+}
+
+.user-locations-heading span,
+.user-locations-attribution {
+  color: var(--text-secondary);
+  font-size: 0.82rem;
+}
+
+.user-locations-map {
+  width: 100%;
+  height: clamp(320px, 52vh, 560px);
+  border: 1px solid var(--border-color);
+  background: #e6e9e3;
+}
+
+.user-locations-empty {
+  display: grid;
+  min-height: 120px;
+  place-items: center;
+  border: 1px dashed var(--border-color);
+  color: var(--text-secondary);
+}
+
+.user-locations-attribution {
+  margin: 8px 0 0;
+}
+
+@media (max-width: 600px) {
+  .user-locations-heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 4px;
+  }
+}

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
-import { LayoutDashboard, Users, Settings, LogOut, Sun, Moon, Activity } from 'lucide-react';
+import { LayoutDashboard, Users, Settings, Sun, Moon, Activity } from 'lucide-react';
 import Home from './pages/Home/Home';
 import Usuarios from './pages/Home/Usuarios/Usuarios';
 
@@ -36,10 +36,6 @@ function App() {
           <a href="/configuracoes" className="sidebar-link" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <Settings size={20} />
             Configurações
-          </a>
-          <a href="/sair" className="sidebar-link" style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: 'auto', marginBottom: '1rem' }}>
-            <LogOut size={20} />
-            Sair
           </a>
         </aside>
 
