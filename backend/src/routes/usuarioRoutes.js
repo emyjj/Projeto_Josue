@@ -10,4 +10,6 @@ router.get('/:id', usuarioController.buscarUsuarioPorId);
 router.put('/:id', usuarioController.atualizarUsuario);
 router.delete('/:id', usuarioController.excluirUsuario);
 
+router.put('/:id/foto', autenticar, uploadImagem('foto'), usuarioController.editarFoto);
+router.delete('/:id/foto', autenticar, usuarioController.removerFoto);
 module.exports = router;
